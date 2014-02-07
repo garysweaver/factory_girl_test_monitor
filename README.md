@@ -8,6 +8,15 @@ Has a configurable threshold for strategy invocations before printing a warning 
 
 This may be very helpful if you are getting "SystemStackError:   stack level too deep" errors caused by factory_girl factories. Those are not always trivial to track down without having more info about strategy invocations.
 
+Depending on your reporter, etc. might look something like this in your test output:
+
+    FactoryGirlTestMonitor.strategy_invocation_max of 199 was exceeded: {:customer=>{:create=>1}, :contact=>{:create=>1}, :project=>{:create=>216}}
+    ...
+      SystemStackError:   stack level too deep
+      /path/to/activesupport.../lib/active_support/notifications/instrumenter.rb:23
+
+There you can see that the project factory is involved in 216 creates, which was more in this case than the intended number.
+
 ### Setup
 
 In your ActiveRecord/Rails 3.1+ project, add this to your Gemfile in your test group:
