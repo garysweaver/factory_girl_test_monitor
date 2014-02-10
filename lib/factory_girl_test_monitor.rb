@@ -68,7 +68,7 @@ end
 begin
   require 'rspec/expectations'
   RSpec.configure do |config|
-    config.before(:each) do
+    config.around(:each) do |t|
       @factory_girl_run_factories = {}
       @factory_girl_max_invocations = 0
       ActiveSupport::Notifications.subscribe("factory_girl.run_factory") do |name, start, finish, id, payload|
@@ -79,6 +79,11 @@ begin
         @factory_girl_run_factories[factory_name][strategy_name] += 1
         this_num = @factory_girl_run_factories[factory_name][strategy_name]
         @factory_girl_max_invocations = [@factory_girl_max_invocations, @factory_girl_run_factories[factory_name][strategy_name]].max
+      end
+      begin
+        t.run
+      ensure
+        puts "\nFactoryGirlTestMonitor.strategy_invocation_max of #{FactoryGirlTestMonitor.strategy_invocation_max} was exceeded: #{@factory_girl_run_factories.inspect}" if defined?(@factory_girl_run_factories) && @factory_girl_max_invocations > FactoryGirlTestMonitor.strategy_invocation_max
       end
     end
   end
