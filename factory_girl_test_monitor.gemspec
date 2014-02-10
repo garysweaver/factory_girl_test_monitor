@@ -12,6 +12,6 @@ Gem::Specification.new do |s|
   s.description = %q{Monitors FactoryGirl strategy invocations (e.g. build, create, etc.) per test with ActiveSupport Instrumentation as described in FactoryGirl's getting started doc in order to output the strategy invocations.}
   s.files = Dir['lib/**/*'] + ['README.md']
   s.license = 'MIT'
-  s.add_dependency 'activesupport', '>= 3'
-  s.add_dependency 'factory_girl'
+  s.add_dependency 'activesupport', '>= 3', '< 5'
+  s.add_dependency 'factory_girl', '>= 3.2', '< 6'
 end
